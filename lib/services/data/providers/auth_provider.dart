@@ -8,6 +8,7 @@ class AuthProvider {
 
   final String loginUrl = '$baseUrl/admin/login';
   final String registerUrl = '$baseUrl/admin/new';
+  final String getCodeUrl = '$baseUrl/admin/get-code';
 
   Future<HttpResponse> login(String username, String password) {
     return networkService
@@ -26,6 +27,10 @@ class AuthProvider {
       "email": email,
       "code": code
     });
+  }
+
+  Future<HttpResponse> getUserCode() {
+    return networkService.get(getCodeUrl);
   }
 
 

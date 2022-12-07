@@ -53,6 +53,21 @@ class UserModel {
 }
 
 @JsonSerializable()
+class AdminModel {
+  final String? fullname;
+  final String? email;
+  final String? code;
+
+  AdminModel(
+      {this.fullname,
+      this.email,
+      this.code});
+
+  factory AdminModel.fromJson(Map<String, dynamic> json) =>
+      _$AdminModelFromJson(json);
+}
+
+@JsonSerializable()
 class UpdateUserRequest {
   final String? fullname;
   final double? height;

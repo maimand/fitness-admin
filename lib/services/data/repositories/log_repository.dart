@@ -34,10 +34,6 @@ class LogRepository {
     return result;
   }
 
-  Future<String> getAdminCode() async {
-    final response = await provider.getUserCode();
-    return response.body['data'] as String;
-  }
 
   Future<String> deleteUser(String email) async {
     final response = await provider.deleteUser(email);

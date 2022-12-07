@@ -7,7 +7,6 @@ class LogProvider {
   LogProvider(this.networkService);
 
   final String getUsersUrl = '$baseUrl/admin/get-users';
-  final String getCodeUrl = '$baseUrl/admin/get-code';
   final String getExerciseLogUrl = '$baseUrl/admin/exercise-logs';
   final String getFoodLogUrl = '$baseUrl/admin/food-logs';
   final String deleteUserUrl = '$baseUrl/admin/delete';
@@ -32,9 +31,7 @@ class LogProvider {
     return networkService.get(getUsersUrl);
   }
 
-  Future<HttpResponse> getUserCode() {
-    return networkService.get(getCodeUrl);
-  }
+
 
   // Future<HttpResponse> getFoodDetailByName({required String name}) {
   //   return networkService.get('$getDietUrl/$name');

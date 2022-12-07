@@ -22,4 +22,11 @@ class AuthRepository {
         fullname: fullname, password: password, email: email, code: code);
   }
 
+  Future<AdminModel> getAdminCode() async {
+    final response = await provider.getUserCode();
+    final result = AdminModel.fromJson(response.body);
+    return result;
+  }
+
+
 }

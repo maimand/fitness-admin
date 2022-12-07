@@ -9,12 +9,13 @@ import 'package:smart_admin_dashboard/services/data/repositories/auth_repository
 class AuthService extends GetxService {
   final AuthRepository authRepository;
 
-  Rxn<UserModel> userModel = Rxn();
+  Rxn<AdminModel> userModel = Rxn();
 
   AuthService(this.authRepository);
 
   @override
   void onInit() {
+    getUserInfo();
     super.onInit();
   }
 
@@ -24,7 +25,7 @@ class AuthService extends GetxService {
       final res = await authRepository.login(username, password);
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('accessToken', res.accessToken!);
-      Get.to(() => HomeScreen());
+      getUserInfo();
     } on Exception catch (e) {
       Get.snackbar(
         'Login Error',
@@ -32,6 +33,19 @@ class AuthService extends GetxService {
       );
     } finally {
       EasyLoading.dismiss();
+    }
+  }
+
+  void getUserInfo() async {
+    try {
+      final res = await authRepository.getAdminCode();
+      userModel.value = res;
+      Get.to(() => HomeScreen());
+    } on Exception catch (e) {
+      Get.snackbar(
+        'Get Info Error',
+        e.toString(),
+      );
     }
   }
 
