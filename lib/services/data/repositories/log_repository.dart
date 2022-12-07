@@ -26,7 +26,7 @@ class LogRepository {
     return result;
   }
 
-  Future<List<UserModel>> getUser() async {
+  Future<List<UserModel>> getUsers() async {
     final response = await provider.getUsers();
     final result = (response.body['data'] as List)
         .map((e) => UserModel.fromJson(e))

@@ -7,7 +7,7 @@ class LogProvider {
   LogProvider(this.networkService);
 
   final String getUsersUrl = '$baseUrl/admin/get-users';
-  final String getExerciseLogUrl = '$baseUrl/admin/exercise-logs';
+  final String getExerciseLogUrl = '$baseUrl/admin/exercises-logs';
   final String getFoodLogUrl = '$baseUrl/admin/food-logs';
   final String deleteUserUrl = '$baseUrl/admin/delete';
 

@@ -24,7 +24,7 @@ class AuthRepository {
 
   Future<AdminModel> getAdminCode() async {
     final response = await provider.getUserCode();
-    final result = AdminModel.fromJson(response.body);
+    final result = AdminModel.fromJson(response.body['data']);
     return result;
   }
 

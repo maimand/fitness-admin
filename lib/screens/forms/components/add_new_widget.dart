@@ -43,7 +43,6 @@ class InformationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: dailyDatas.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

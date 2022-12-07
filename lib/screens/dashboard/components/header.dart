@@ -1,7 +1,9 @@
+import 'package:get/get.dart';
 import 'package:smart_admin_dashboard/core/constants/color_constants.dart';
 import 'package:smart_admin_dashboard/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart_admin_dashboard/services/services/auth_service.dart';
 
 class Header extends StatelessWidget {
   const Header({
@@ -23,7 +25,7 @@ class Header extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hello, Deniz 👋",
+                "Hello,",
                 style: Theme.of(context).textTheme.headline6,
               ),
               SizedBox(
@@ -35,9 +37,7 @@ class Header extends StatelessWidget {
               ),
             ],
           ),
-        if (!Responsive.isMobile(context))
-          Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
-        Expanded(child: SearchField()),
+        const Spacer(),
         ProfileCard()
       ],
     );
@@ -71,9 +71,8 @@ class ProfileCard extends StatelessWidget {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Text("Deniz Çolak"),
+              child: Obx(() => Text("${Get.find<AuthService>().userModel.value?.email}")),
             ),
-          Icon(Icons.keyboard_arrow_down),
         ],
       ),
     );

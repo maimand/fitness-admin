@@ -1,6 +1,8 @@
+import 'package:get/get.dart';
 import 'package:smart_admin_dashboard/core/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart_admin_dashboard/services/services/auth_service.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
@@ -15,59 +17,33 @@ class SideMenu extends StatelessWidget {
         child: Column(
           children: [
             DrawerHeader(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: defaultPadding * 3,
-                ),
-                Image.asset(
-                  "assets/logo/logo_icon.png",
-                  scale: 5,
-                ),
-                SizedBox(
-                  height: defaultPadding,
-                ),
-                Text("Smart HR - Application")
-              ],
-            )),
-            DrawerListTile(
-              title: "Dashboard",
-              svgSrc: "assets/icons/menu_dashbord.svg",
-              press: () {},
-            ),
-            DrawerListTile(
-              title: "Posts",
-              svgSrc: "assets/icons/menu_tran.svg",
-              press: () {},
-            ),
-            DrawerListTile(
-              title: "Pages",
-              svgSrc: "assets/icons/menu_task.svg",
-              press: () {},
-            ),
-            DrawerListTile(
-              title: "Categories",
-              svgSrc: "assets/icons/menu_doc.svg",
-              press: () {},
-            ),
-            DrawerListTile(
-              title: "Appearance",
-              svgSrc: "assets/icons/menu_store.svg",
-              press: () {},
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: defaultPadding * 3,
+                  ),
+                  Image.asset(
+                    "assets/logo/logo_icon.png",
+                    scale: 5,
+                  ),
+                  SizedBox(
+                    height: defaultPadding - 10,
+                  ),
+                  Obx(
+                    () => Text(
+                        "Fitness Trainer\n${Get.find<AuthService>().userModel.value?.fullname ?? ''}"),
+                  ),
+                ],
+              ),
             ),
             DrawerListTile(
               title: "Users",
-              svgSrc: "assets/icons/menu_notification.svg",
-              press: () {},
-            ),
-            DrawerListTile(
-              title: "Tools",
               svgSrc: "assets/icons/menu_profile.svg",
               press: () {},
             ),
             DrawerListTile(
-              title: "Settings",
+              title: "Exercises",
               svgSrc: "assets/icons/menu_setting.svg",
               press: () {},
             ),

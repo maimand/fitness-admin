@@ -1,8 +1,10 @@
+import 'package:get/get.dart';
 import 'package:smart_admin_dashboard/core/constants/color_constants.dart';
-import 'package:smart_admin_dashboard/core/utils/colorful_tag.dart';
-import 'package:smart_admin_dashboard/models/recent_user_model.dart';
 import 'package:colorize_text_avatar/colorize_text_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_admin_dashboard/screens/dashboard/controllers/dashboard_controller.dart';
+import 'package:smart_admin_dashboard/screens/forms/input_form.dart';
+import 'package:smart_admin_dashboard/services/data/models/user.model.dart';
 
 class RecentUsers extends StatelessWidget {
   const RecentUsers({
@@ -11,6 +13,7 @@ class RecentUsers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<DashboardController>();
     return Container(
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
@@ -28,32 +31,22 @@ class RecentUsers extends StatelessWidget {
             //scrollDirection: Axis.horizontal,
             child: SizedBox(
               width: double.infinity,
-              child: DataTable(
-                horizontalMargin: 0,
-                columnSpacing: defaultPadding,
-                columns: [
-                  DataColumn(
-                    label: Text("Name Surname"),
+              child: Obx(
+                () => DataTable(
+                  horizontalMargin: 0,
+                  columnSpacing: defaultPadding,
+                  columns: [
+                    DataColumn(
+                      label: Text("Name Surname"),
+                    ),
+                    DataColumn(
+                      label: Text("E-mail"),
+                    ),
+                  ],
+                  rows: List.generate(
+                    controller.users.length,
+                    (index) => recentUserDataRow( controller.users[index], context),
                   ),
-                  DataColumn(
-                    label: Text("Applied Position"),
-                  ),
-                  DataColumn(
-                    label: Text("E-mail"),
-                  ),
-                  DataColumn(
-                    label: Text("Registration Date"),
-                  ),
-                  DataColumn(
-                    label: Text("Status"),
-                  ),
-                  DataColumn(
-                    label: Text("Operation"),
-                  ),
-                ],
-                rows: List.generate(
-                  recentUsers.length,
-                  (index) => recentUserDataRow(recentUsers[index], context),
                 ),
               ),
             ),
@@ -64,7 +57,7 @@ class RecentUsers extends StatelessWidget {
   }
 }
 
-DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
+DataRow recentUserDataRow(UserModel userInfo, BuildContext context) {
   return DataRow(
     cells: [
       DataCell(
@@ -78,12 +71,12 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
               upperCase: true,
               numberLetters: 1,
               shape: Shape.Rectangle,
-              text: userInfo.name!,
+              text: userInfo.fullname!,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
               child: Text(
-                userInfo.name!,
+                userInfo.fullname!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -91,24 +84,24 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
           ],
         ),
       ),
-      DataCell(Container(
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color: getRoleColor(userInfo.role).withOpacity(.2),
-            border: Border.all(color: getRoleColor(userInfo.role)),
-            borderRadius: BorderRadius.all(Radius.circular(5.0) //
-                ),
-          ),
-          child: Text(userInfo.role!))),
-      DataCell(Text(userInfo.email!)),
-      DataCell(Text(userInfo.date!)),
-      DataCell(Text(userInfo.posts!)),
       DataCell(
         Row(
           children: [
+            Text(
+              userInfo.email!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const Spacer(),
             TextButton(
               child: Text('View', style: TextStyle(color: greenColor)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(new MaterialPageRoute<Null>(
+                    builder: (BuildContext context) {
+                      return new FormMaterial(user: userInfo);
+                    },
+                    fullscreenDialog: true));
+              },
             ),
             SizedBox(
               width: 6,
@@ -136,7 +129,7 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
                             child: Column(
                               children: [
                                 Text(
-                                    "Are you sure want to delete '${userInfo.name}'?"),
+                                    "Are you sure want to delete '${userInfo.fullname}'?"),
                                 SizedBox(
                                   height: 16,
                                 ),
@@ -148,8 +141,6 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
                                           Icons.close,
                                           size: 14,
                                         ),
-                                        style: ElevatedButton.styleFrom(
-                                            primary: Colors.grey),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
@@ -163,8 +154,11 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
                                           size: 14,
                                         ),
                                         style: ElevatedButton.styleFrom(
-                                            primary: Colors.red),
-                                        onPressed: () {},
+                                            backgroundColor: Colors.red),
+                                        onPressed: () {
+                                          Get.find<DashboardController>().deleteUser(userInfo);
+                                          Get.back();
+                                        },
                                         label: Text("Delete"))
                                   ],
                                 )
