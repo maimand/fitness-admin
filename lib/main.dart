@@ -4,10 +4,8 @@ import 'package:smart_admin_dashboard/core/constants/color_constants.dart';
 import 'package:smart_admin_dashboard/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smart_admin_dashboard/services/data/providers/diet_provider.dart';
 import 'package:smart_admin_dashboard/services/data/providers/log_provider.dart';
 import 'package:smart_admin_dashboard/services/data/repositories/auth_repository.dart';
-import 'package:smart_admin_dashboard/services/data/repositories/diet_repository.dart';
 import 'package:smart_admin_dashboard/services/data/repositories/log_repository.dart';
 import 'package:smart_admin_dashboard/services/services/auth_service.dart';
 
@@ -17,10 +15,8 @@ import 'services/services/network_service.dart';
 void main() {
   Get.put(NetWorkService());
   Get.put(AuthProvider(Get.find<NetWorkService>()));
-  Get.put(DietProvider(Get.find<NetWorkService>()));
   Get.put(LogProvider(Get.find<NetWorkService>()));
   Get.put(AuthRepository(Get.find<AuthProvider>()));
-  Get.put(DietRepository(Get.find<DietProvider>()));
   Get.put(LogRepository(Get.find<LogProvider>()));
   Get.put(AuthService(Get.find<AuthRepository>()));
   runApp(MyApp());
@@ -39,7 +35,6 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: bgColor,
         primaryColor: greenColor,
         dialogBackgroundColor: secondaryColor,
-        buttonColor: greenColor,
         textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme)
             .apply(bodyColor: Colors.white),
         canvasColor: secondaryColor,

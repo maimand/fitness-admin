@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:smart_admin_dashboard/core/constants/color_constants.dart';
 import 'package:smart_admin_dashboard/core/widgets/app_button_widget.dart';
 import 'package:smart_admin_dashboard/core/widgets/input_widget.dart';
@@ -5,6 +6,7 @@ import 'package:smart_admin_dashboard/screens/home/home_screen.dart';
 import 'package:smart_admin_dashboard/screens/login/components/slider_widget.dart';
 
 import 'package:flutter/material.dart';
+import 'package:smart_admin_dashboard/services/services/auth_service.dart';
 
 class Login extends StatefulWidget {
   Login({required this.title});
@@ -258,6 +260,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     );
   }
 
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   Container _loginScreen(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -270,6 +275,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           children: [
             InputWidget(
               keyboardType: TextInputType.emailAddress,
+              kController: emailController,
               onSaved: (String? value) {
                 // This optional block of code can be used to run
                 // code when the user saves the form.
@@ -291,6 +297,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             ),
             SizedBox(height: 8.0),
             InputWidget(
+              kController: passwordController,
               topLabel: "Password",
               obscureText: true,
               hintText: "Enter Password",
@@ -303,10 +310,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               type: ButtonType.PRIMARY,
               text: "Sign In",
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                );
+                Get.find<AuthService>().onLogin(emailController.text.trim(),
+                    passwordController.text.trim());
               },
             ),
             SizedBox(height: 24.0),

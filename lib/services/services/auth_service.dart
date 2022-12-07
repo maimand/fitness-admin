@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_admin_dashboard/screens/home/home_screen.dart';
@@ -14,32 +15,23 @@ class AuthService extends GetxService {
 
   @override
   void onInit() {
-    getUserInformation();
     super.onInit();
   }
 
   void onLogin(String username, String password) async {
     try {
+      EasyLoading.show();
       final res = await authRepository.login(username, password);
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('accessToken', res.accessToken!);
-      getUserInformation();
+      Get.to(() => HomeScreen());
     } on Exception catch (e) {
       Get.snackbar(
         'Login Error',
         e.toString(),
       );
-    }
-  }
-
-  Future<void> getUserInformation() async {
-    try {
-      final res = await authRepository.getUserInfo();
-      userModel.value = res;
-
-        Get.offAll(() => const HomeScreen());
-    } on Exception catch (e) {
-      Get.snackbar('Get User Info Error', e.toString());
+    } finally {
+      EasyLoading.dismiss();
     }
   }
 
@@ -49,10 +41,13 @@ class AuthService extends GetxService {
       required String email,
       required String code}) async {
     try {
+      EasyLoading.show();
       await authRepository.register(
           fullname: username, password: password, email: email, code: code);
     } on Exception catch (e) {
       Get.snackbar('Register failed', e.toString());
+    } finally {
+      EasyLoading.dismiss();
     }
   }
 
