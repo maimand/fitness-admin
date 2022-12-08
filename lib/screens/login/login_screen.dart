@@ -65,59 +65,43 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   child: Card(
                     //elevation: 5,
                     color: bgColor,
-                    child: Container(
-                      padding: EdgeInsets.all(42),
-                      width: MediaQuery.of(context).size.width / 3.6,
-                      height: MediaQuery.of(context).size.height / 1.2,
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 60,
-                          ),
-                          Image.asset("assets/logo/logo_icon.png", scale: 3),
-                          SizedBox(height: 24.0),
-                          //Flexible(
-                          //  child: _loginScreen(context),
-                          //),
-                          Flexible(
-                            child: Stack(
-                              children: [
-                                SlideTransition(
-                                  position:
-                                      _animationController!.drive(tweenRight),
-                                  child: Stack(
-                                      fit: StackFit.loose,
-                                      clipBehavior: Clip.none,
-                                      children: [
-                                        _loginScreen(context),
-                                      ]),
-                                ),
-                                SlideTransition(
-                                  position:
-                                      _animationController!.drive(tweenLeft),
-                                  child: Stack(
-                                      fit: StackFit.loose,
-                                      clipBehavior: Clip.none,
-                                      children: [
-                                        _registerScreen(context),
-                                      ]),
-                                ),
-                              ],
+                    child: SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.only(top: 20),
+                        width: MediaQuery.of(context).size.width / 3.6,
+                        height: MediaQuery.of(context).size.height / 1.2,
+                        child: Column(
+                          children: <Widget>[
+                            Image.asset("assets/logo/logo_icon.png", scale: 3),
+                            SizedBox(height: 24.0),
+                            Flexible(
+                              child: Stack(
+                                children: [
+                                  SlideTransition(
+                                    position:
+                                        _animationController!.drive(tweenRight),
+                                    child: Stack(
+                                        fit: StackFit.loose,
+                                        clipBehavior: Clip.none,
+                                        children: [
+                                          _loginScreen(context),
+                                        ]),
+                                  ),
+                                  SlideTransition(
+                                    position:
+                                        _animationController!.drive(tweenLeft),
+                                    child: Stack(
+                                        fit: StackFit.loose,
+                                        clipBehavior: Clip.none,
+                                        children: [
+                                          _registerScreen(context),
+                                        ]),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-
-                          //Flexible(
-                          //  child: SlideTransition(
-                          //    position: _animationController!.drive(tweenLeft),
-                          //    child: Stack(
-                          //        fit: StackFit.loose,
-                          //        clipBehavior: Clip.none,
-                          //        children: [
-                          //          _registerScreen(context),
-                          //        ]),
-                          //  ),
-                          //),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -131,11 +115,12 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   }
 
   Container _registerScreen(BuildContext context) {
+    final nameController = TextEditingController();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final codeController = TextEditingController();
     return Container(
       width: double.infinity,
-      constraints: BoxConstraints(
-        minHeight: MediaQuery.of(context).size.height - 0.0,
-      ),
       child: Form(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -146,6 +131,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 // This optional block of code can be used to run
                 // code when the user saves the form.
               },
+              kController: nameController,
               onChanged: (String? value) {
                 // This optional block of code can be used to run
                 // code when the user saves the form.
@@ -163,6 +149,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             ),
             SizedBox(height: 8.0),
             InputWidget(
+              kController: emailController,
               keyboardType: TextInputType.emailAddress,
               onSaved: (String? value) {
                 // This optional block of code can be used to run
@@ -185,9 +172,20 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             ),
             SizedBox(height: 8.0),
             InputWidget(
+              kController: passwordController,
               topLabel: "Password",
               obscureText: true,
               hintText: "Enter Password",
+              onSaved: (String? uPassword) {},
+              onChanged: (String? value) {},
+              validator: (String? value) {},
+            ),
+            SizedBox(height: 8.0),
+            InputWidget(
+              kController: codeController,
+              topLabel: "Code",
+              obscureText: true,
+              hintText: "Enter Code",
               onSaved: (String? uPassword) {},
               onChanged: (String? value) {},
               validator: (String? value) {},
@@ -197,30 +195,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               type: ButtonType.PRIMARY,
               text: "Sign Up",
               onPressed: () {
+                Get.find<AuthService>().onRegister(
+                    username: nameController.text.trim(),
+                    password: passwordController.text.trim(),
+                    email: emailController.text.trim(),
+                    code: codeController.text.trim());
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               },
-            ),
-            SizedBox(height: 24.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Checkbox(
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value!;
-                        });
-                      },
-                    ),
-                    Text("Remember Me")
-                  ],
-                ),
-              ],
             ),
             SizedBox(height: 24.0),
             Center(
@@ -260,10 +244,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     );
   }
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
   Container _loginScreen(BuildContext context) {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
     return Container(
       width: double.infinity,
       constraints: BoxConstraints(
@@ -313,36 +296,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 Get.find<AuthService>().onLogin(emailController.text.trim(),
                     passwordController.text.trim());
               },
-            ),
-            SizedBox(height: 24.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Checkbox(
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value!;
-                        });
-                      },
-                    ),
-                    Text("Remember Me")
-                  ],
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    "Forget Password?",
-                    textAlign: TextAlign.right,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2!
-                        .copyWith(color: greenColor),
-                  ),
-                ),
-              ],
             ),
             SizedBox(height: 24.0),
             Center(

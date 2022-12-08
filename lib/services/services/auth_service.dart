@@ -58,6 +58,7 @@ class AuthService extends GetxService {
       EasyLoading.show();
       await authRepository.register(
           fullname: username, password: password, email: email, code: code);
+      Get.offAll(() => Login(title: 'Login'));
     } on Exception catch (e) {
       Get.snackbar('Register failed', e.toString());
     } finally {

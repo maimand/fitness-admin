@@ -47,6 +47,13 @@ class SideMenu extends StatelessWidget {
               svgSrc: "assets/icons/menu_setting.svg",
               press: () {},
             ),
+            DrawerListTile(
+              title: "Log out",
+              svgSrc: "assets/icons/menu_setting.svg",
+              press: () {
+                Get.find<AuthService>().logout();
+              },
+            ),
           ],
         ),
       ),
