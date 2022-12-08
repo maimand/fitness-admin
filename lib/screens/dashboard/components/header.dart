@@ -35,6 +35,12 @@ class Header extends StatelessWidget {
                 "Wellcome to your dashboard",
                 style: Theme.of(context).textTheme.subtitle2,
               ),
+              Obx(
+                () => Text(
+                  "Your code: ${Get.find<AuthService>().userModel.value?.code}",
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
+              ),
             ],
           ),
         const Spacer(),
