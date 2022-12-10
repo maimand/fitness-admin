@@ -107,6 +107,72 @@ DataRow recentUserDataRow(UserModel userInfo, BuildContext context) {
               width: 6,
             ),
             TextButton(
+              child: Text("Reset", style: TextStyle(color: Colors.redAccent)),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                          title: Center(
+                            child: Column(
+                              children: [
+                                Icon(Icons.warning_outlined,
+                                    size: 36, color: Colors.red),
+                                SizedBox(height: 20),
+                                Text("Confirm Reset User's Password"),
+                              ],
+                            ),
+                          ),
+                          content: Container(
+                            color: secondaryColor,
+                            height: 70,
+                            child: Column(
+                              children: [
+                                Text(
+                                    "Are you sure want to reset'${userInfo.fullname}''s password?"),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton.icon(
+                                        icon: Icon(
+                                          Icons.close,
+                                          size: 14,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        label: Text("Cancel")),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    ElevatedButton.icon(
+                                        icon: Icon(
+                                          Icons.refresh,
+                                          size: 14,
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.yellow),
+                                        onPressed: () {
+                                          Get.find<DashboardController>().resetUserPassword(userInfo);
+                                          Get.back();
+                                        },
+                                        label: Text("Reset"))
+                                  ],
+                                )
+                              ],
+                            ),
+                          ));
+                    });
+              },
+              // Delete
+            ),
+            SizedBox(
+              width: 6,
+            ),
+            TextButton(
               child: Text("Delete", style: TextStyle(color: Colors.redAccent)),
               onPressed: () {
                 showDialog(

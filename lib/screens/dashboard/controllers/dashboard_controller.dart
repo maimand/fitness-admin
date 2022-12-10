@@ -35,5 +35,13 @@ class DashboardController extends GetxController {
     }
   }
 
+  void resetUserPassword(UserModel user) {
+    try {
+      repository.resetUserPassword(user.email!);
+    } on Exception catch (e) {
+      Get.snackbar('Delete User Error', e.toString());
+    }
+  }
+
 
 }

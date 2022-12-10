@@ -39,4 +39,8 @@ class LogRepository {
     final response = await provider.deleteUser(email);
     return response.body['data'] as String;
   }
+
+  Future<void> resetUserPassword(String email) async {
+    await provider.resetUserPassword(email);
+  }
 }

@@ -10,6 +10,7 @@ class LogProvider {
   final String getExerciseLogUrl = '$baseUrl/admin/exercises-logs';
   final String getFoodLogUrl = '$baseUrl/admin/food-logs';
   final String deleteUserUrl = '$baseUrl/admin/delete';
+  final String resetPasswordUserUrl = '$baseUrl/admin/reset-password';
 
   Future<HttpResponse> getDietLogs(String email,
       {int page = 1, int size = 20}) {
@@ -25,6 +26,12 @@ class LogProvider {
     String email,
   ) {
     return networkService.delete('$deleteUserUrl/$email');
+  }
+
+  Future<HttpResponse> resetUserPassword(
+    String email,
+  ) {
+    return networkService.get('$resetPasswordUserUrl/$email');
   }
 
   Future<HttpResponse> getUsers({int page = 1, int size = 20}) {
