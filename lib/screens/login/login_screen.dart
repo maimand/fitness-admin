@@ -194,16 +194,15 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             AppButton(
               type: ButtonType.PRIMARY,
               text: "Sign Up",
-              onPressed: () {
-                Get.find<AuthService>().onRegister(
+              onPressed: () async  {
+                final res = await Get.find<AuthService>().onRegister(
                     username: nameController.text.trim(),
                     password: passwordController.text.trim(),
                     email: emailController.text.trim(),
                     code: codeController.text.trim());
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                );
+                if(res) {
+                  _animationController!.reverse();
+                }
               },
             ),
             SizedBox(height: 24.0),

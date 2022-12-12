@@ -42,14 +42,14 @@ class AuthService extends GetxService {
       userModel.value = res;
       Get.to(() => HomeScreen());
     } on Exception {
-      Get.snackbar(
-        'Login Error',
-        'Token expired',
-      );
+      // Get.snackbar(
+      //   'Login Error',
+      //   'Token expired',
+      // );
     }
   }
 
-  void onRegister(
+  Future<bool> onRegister(
       {required String username,
       required String password,
       required String email,
@@ -58,12 +58,15 @@ class AuthService extends GetxService {
       EasyLoading.show();
       await authRepository.register(
           fullname: username, password: password, email: email, code: code);
-      Get.offAll(() => Login(title: 'Login'));
+      Get.snackbar('Register succeed', 'Please login again');
+
+      return true;
     } on Exception catch (e) {
-      Get.snackbar('Register failed', e.toString());
+      Get.snackbar('Register failed', 'Please input correct info');
     } finally {
       EasyLoading.dismiss();
     }
+    return false;
   }
 
   void logout() async {
