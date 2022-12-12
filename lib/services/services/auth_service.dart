@@ -41,10 +41,10 @@ class AuthService extends GetxService {
       final res = await authRepository.getAdminCode();
       userModel.value = res;
       Get.to(() => HomeScreen());
-    } on Exception catch (e) {
+    } on Exception {
       Get.snackbar(
-        'Get Info Error',
-        e.toString(),
+        'Login Error',
+        'Token expired',
       );
     }
   }

@@ -107,7 +107,7 @@ DataRow recentUserDataRow(UserModel userInfo, BuildContext context) {
               width: 6,
             ),
             TextButton(
-              child: Text("Reset", style: TextStyle(color: Colors.redAccent)),
+              child: Text("Reset", style: TextStyle(color: Colors.yellowAccent)),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -129,7 +129,7 @@ DataRow recentUserDataRow(UserModel userInfo, BuildContext context) {
                             child: Column(
                               children: [
                                 Text(
-                                    "Are you sure want to reset'${userInfo.fullname}''s password?"),
+                                    "Are you sure want to reset ${userInfo.fullname}'s password?"),
                                 SizedBox(
                                   height: 16,
                                 ),

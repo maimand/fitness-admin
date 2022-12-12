@@ -24,6 +24,11 @@ class FormMaterial extends StatelessWidget {
             Get.back();
           },
         ),
+        title: Text(
+          "${user.fullname ?? 'user'}'s Logs",
+          style: TextStyle(fontSize: 20),
+        ),
+        centerTitle: false,
       ),
       body: Row(
         children: [
@@ -61,10 +66,11 @@ class FormMaterial extends StatelessWidget {
                                         (item1.time ?? DateTime.now())
                                             .compareTo(
                                                 (item2.time ?? DateTime.now())),
-                                    order: GroupedListOrder.DESC,
+                                    order: GroupedListOrder.ASC,
                                     useStickyGroupSeparators: true,
                                     groupSeparatorBuilder: (String value) =>
-                                        Padding(
+                                        Container(
+                                      color: Colors.black,
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         value,
@@ -132,85 +138,85 @@ class FormMaterial extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(32.0),
                   child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 16.0),
-                      child: Column(
-                        children: [
-                          Center(
-                            child: Text("Diet Logs"),
-                          ),
-                          const SizedBox(
-                            height: defaultPadding,
-                          ),
-                          Obx(
-                            () => Expanded(
-                              child: controller.foodLogs.isNotEmpty
-                                  ? GroupedListView<FoodLog, String>(
-                                      elements: controller.foodLogs,
-                                      groupBy: (element) =>
-                                          DateFormat('dd-MM-yyyy').format(
-                                              element.time ?? DateTime.now()),
-                                      groupComparator: (value1, value2) =>
-                                          value2.compareTo(value1),
-                                      itemComparator: (item1, item2) => (item1
-                                                  .time ??
-                                              DateTime.now())
-                                          .compareTo(
-                                              (item2.time ?? DateTime.now())),
-                                      order: GroupedListOrder.DESC,
-                                      useStickyGroupSeparators: true,
-                                      groupSeparatorBuilder: (String value) =>
-                                          Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          value,
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 16.0),
+                    child: Column(
+                      children: [
+                        Center(
+                          child: Text("Diet Logs"),
+                        ),
+                        const SizedBox(
+                          height: defaultPadding,
+                        ),
+                        Obx(
+                          () => Expanded(
+                            child: controller.foodLogs.isNotEmpty
+                                ? GroupedListView<FoodLog, String>(
+                                    elements: controller.foodLogs,
+                                    groupBy: (element) =>
+                                        DateFormat('dd-MM-yyyy').format(
+                                            element.time ?? DateTime.now()),
+                                    groupComparator: (value1, value2) =>
+                                        value2.compareTo(value1),
+                                    itemComparator: (item1, item2) =>
+                                        (item1.time ?? DateTime.now())
+                                            .compareTo(
+                                                (item2.time ?? DateTime.now())),
+                                    order: GroupedListOrder.ASC,
+                                    useStickyGroupSeparators: true,
+                                    groupSeparatorBuilder: (String value) =>
+                                        Container(
+                                      color: Colors.black,
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        value,
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      itemBuilder: (c, log) {
-                                        return Card(
-                                          margin: const EdgeInsets.symmetric(
+                                    ),
+                                    itemBuilder: (c, log) {
+                                      return Card(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 6.0),
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10.0, vertical: 6.0),
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0,
-                                                vertical: 6.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(log.foodName ?? '',
-                                                        style: const TextStyle(
-                                                            fontSize: 18)),
-                                                    Text(DateFormat('hh:mm a')
-                                                        .format(log.time
-                                                                ?.toLocal() ??
-                                                            DateTime.now())),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 12),
-                                                Text(
-                                                    "${log.totalCaloriesIntake ?? 0} kCal",
-                                                    style: const TextStyle(
-                                                        fontSize: 12)),
-                                              ],
-                                            ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(log.foodName ?? '',
+                                                      style: const TextStyle(
+                                                          fontSize: 18)),
+                                                  Text(DateFormat('hh:mm a')
+                                                      .format(
+                                                          log.time?.toLocal() ??
+                                                              DateTime.now())),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 12),
+                                              Text(
+                                                  "${log.totalCaloriesIntake ?? 0} kCal",
+                                                  style: const TextStyle(
+                                                      fontSize: 12)),
+                                            ],
                                           ),
-                                        );
-                                      },
-                                    )
-                                  : const SizedBox.shrink(),
-                            ),
-                          )
-                        ],
-                      ),),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : const SizedBox.shrink(),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
