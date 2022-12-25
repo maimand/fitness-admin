@@ -36,16 +36,14 @@ class RecentUsers extends StatelessWidget {
                   horizontalMargin: 0,
                   columnSpacing: defaultPadding,
                   columns: [
-                    DataColumn(
-                      label: Text("Name Surname"),
-                    ),
-                    DataColumn(
-                      label: Text("E-mail"),
-                    ),
+                    DataColumn(label: Text("Name Surname")),
+                    DataColumn(label: Text("Age")),
+                    DataColumn(label: Text("E-mail")),
                   ],
                   rows: List.generate(
                     controller.users.length,
-                    (index) => recentUserDataRow( controller.users[index], context),
+                    (index) =>
+                        recentUserDataRow(controller.users[index], context),
                   ),
                 ),
               ),
@@ -85,6 +83,16 @@ DataRow recentUserDataRow(UserModel userInfo, BuildContext context) {
         ),
       ),
       DataCell(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+          child: Text(
+            '${userInfo.age ?? 0}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+      DataCell(
         Row(
           children: [
             Text(
@@ -107,7 +115,8 @@ DataRow recentUserDataRow(UserModel userInfo, BuildContext context) {
               width: 6,
             ),
             TextButton(
-              child: Text("Reset", style: TextStyle(color: Colors.yellowAccent)),
+              child:
+                  Text("Reset", style: TextStyle(color: Colors.yellowAccent)),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -156,7 +165,8 @@ DataRow recentUserDataRow(UserModel userInfo, BuildContext context) {
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.yellow),
                                         onPressed: () {
-                                          Get.find<DashboardController>().resetUserPassword(userInfo);
+                                          Get.find<DashboardController>()
+                                              .resetUserPassword(userInfo);
                                           Get.back();
                                         },
                                         label: Text("Reset"))
@@ -222,7 +232,8 @@ DataRow recentUserDataRow(UserModel userInfo, BuildContext context) {
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.red),
                                         onPressed: () {
-                                          Get.find<DashboardController>().deleteUser(userInfo);
+                                          Get.find<DashboardController>()
+                                              .deleteUser(userInfo);
                                           Get.back();
                                         },
                                         label: Text("Delete"))

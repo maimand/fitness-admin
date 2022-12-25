@@ -1,6 +1,9 @@
+import 'package:get/get.dart';
 import 'package:smart_admin_dashboard/responsive.dart';
 import 'package:smart_admin_dashboard/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_admin_dashboard/screens/dashboard/request_screen.dart';
+import 'package:smart_admin_dashboard/screens/home/home_controller.dart';
 
 import 'components/side_menu.dart';
 
@@ -9,6 +12,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(HomeController());
     return SelectionArea(
       child: Scaffold(
         //key: context.read<MenuController>().scaffoldKey,
@@ -27,7 +31,9 @@ class HomeScreen extends StatelessWidget {
               Expanded(
                 // It takes 5/6 part of the screen
                 flex: 5,
-                child: DashboardScreen(),
+                child: Obx(() => controller.currentPage.value == 0
+                    ? const DashboardScreen()
+                    : const RequestScreen()),
               ),
             ],
           ),

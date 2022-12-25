@@ -42,14 +42,6 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-AdminModel _$AdminModelFromJson(Map<String, dynamic> json) {
-  return AdminModel(
-    fullname: json['fullname'] as String?,
-    email: json['email'] as String?,
-    code: json['code'] as String?,
-  );
-}
-
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'fullname': instance.fullname,
       'email': instance.email,
@@ -58,6 +50,23 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'age': instance.age,
       'fatPercent': instance.fatPercent,
       'gender': instance.gender,
+    };
+
+AdminModel _$AdminModelFromJson(Map<String, dynamic> json) {
+  return AdminModel(
+    fullname: json['fullname'] as String?,
+    email: json['email'] as String?,
+    centerName: json['centerName'] as String?,
+    center: json['center'] as String?,
+  );
+}
+
+Map<String, dynamic> _$AdminModelToJson(AdminModel instance) =>
+    <String, dynamic>{
+      'fullname': instance.fullname,
+      'email': instance.email,
+      'center': instance.center,
+      'centerName': instance.centerName,
     };
 
 UpdateUserRequest _$UpdateUserRequestFromJson(Map<String, dynamic> json) {
@@ -109,7 +118,7 @@ UserInfoAdvancePredictRequest _$UserInfoAdvancePredictRequestFromJson(
     (json['thingh'] as num).toDouble(),
     (json['weight'] as num).toDouble(),
     (json['height'] as num).toDouble(),
-    (json['sex'] as String),
+    json['sex'] as String,
   );
 }
 

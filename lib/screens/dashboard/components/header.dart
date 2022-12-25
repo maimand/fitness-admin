@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:smart_admin_dashboard/core/constants/color_constants.dart';
 import 'package:smart_admin_dashboard/responsive.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class Header extends StatelessWidget {
               ),
               Obx(
                 () => Text(
-                  "Your code: ${Get.find<AuthService>().userModel.value?.code}",
+                  "Your email: ${Get.find<AuthService>().userModel.value?.email}",
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
@@ -57,29 +58,60 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: defaultPadding),
-      padding: EdgeInsets.symmetric(
-        horizontal: defaultPadding,
-        vertical: defaultPadding / 2,
-      ),
-      decoration: BoxDecoration(
-        color: secondaryColor,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        border: Border.all(color: Colors.white10),
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundImage: AssetImage("assets/images/profile_pic.png"),
-          ),
-          if (!Responsive.isMobile(context))
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Obx(() => Text("${Get.find<AuthService>().userModel.value?.email}")),
-            ),
-        ],
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                  title: Center(
+                    child: Text("Your QR code"),
+                  ),
+                  content: Container(
+                    color: secondaryColor,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: 200,
+                          width: 200,
+                          child: QrImage(
+                            data: Get.find<AuthService>().userModel.value?.center ?? '',
+                            version: QrVersions.auto,
+                            size: 200.0,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.close,
+                              size: 14,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            label: Text("Cancel"))
+                      ],
+                    ),
+                  ));
+            });
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: defaultPadding),
+        padding: EdgeInsets.symmetric(
+          horizontal: defaultPadding,
+          vertical: defaultPadding / 2,
+        ),
+        decoration: BoxDecoration(
+          color: secondaryColor,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(color: Colors.white10),
+        ),
+        child: Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
+          child: Text('Get your QR code'),
+        ),
       ),
     );
   }

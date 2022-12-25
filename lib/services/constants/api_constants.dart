@@ -1,1 +1,1 @@
-const baseUrl = 'https://personal-fitness-trainer.herokuapp.com';
+const baseUrl = 'http://0.0.0.0:8080';

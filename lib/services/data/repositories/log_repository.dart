@@ -34,6 +34,14 @@ class LogRepository {
     return result;
   }
 
+  Future<List<UserModel>> getInactiveUsers() async {
+    final response = await provider.getInactiveUsers();
+    final result = (response.body['data'] as List)
+        .map((e) => UserModel.fromJson(e))
+        .toList();
+    return result;
+  }
+
 
   Future<String> deleteUser(String email) async {
     final response = await provider.deleteUser(email);
@@ -42,5 +50,17 @@ class LogRepository {
 
   Future<void> resetUserPassword(String email) async {
     await provider.resetUserPassword(email);
+  }
+
+  Future<void> acceptUser(String email) async {
+    await provider.acceptUser(email);
+  }
+
+  Future<void> enableUser(String email) async {
+    await provider.enableUser(email);
+  }
+
+  Future<void> disableUser(String email) async {
+    await provider.disableUser(email);
   }
 }

@@ -56,12 +56,14 @@ class UserModel {
 class AdminModel {
   final String? fullname;
   final String? email;
-  final String? code;
+  final String? center;
+  final String? centerName;
 
   AdminModel(
       {this.fullname,
       this.email,
-      this.code});
+      this.centerName,
+      this.center});
 
   factory AdminModel.fromJson(Map<String, dynamic> json) =>
       _$AdminModelFromJson(json);

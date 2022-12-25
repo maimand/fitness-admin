@@ -1,17 +1,16 @@
+import 'package:get/get.dart';
 import 'package:smart_admin_dashboard/core/constants/color_constants.dart';
-
-import 'package:smart_admin_dashboard/core/utils/colorful_tag.dart';
-import 'package:smart_admin_dashboard/models/recent_user_model.dart';
 import 'package:colorize_text_avatar/colorize_text_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_admin_dashboard/services/data/models/user.model.dart';
+import 'package:smart_admin_dashboard/screens/dashboard/controllers/request_controller.dart';
 
-class RecentUsers extends StatelessWidget {
-  const RecentUsers({
-    Key? key,
-  }) : super(key: key);
+class RecentRequest extends StatelessWidget {
+  const RecentRequest({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<RequestController>();
     return Container(
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
@@ -22,39 +21,30 @@ class RecentUsers extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Recent Users",
+            "Recent Candidates",
             style: Theme.of(context).textTheme.subtitle1,
           ),
           SingleChildScrollView(
             //scrollDirection: Axis.horizontal,
             child: SizedBox(
               width: double.infinity,
-              child: DataTable(
-                horizontalMargin: 0,
-                columnSpacing: defaultPadding,
-                columns: [
-                  DataColumn(
-                    label: Text("Name Surname"),
+              child: Obx(
+                () => DataTable(
+                  horizontalMargin: 0,
+                  columnSpacing: defaultPadding,
+                  columns: [
+                    DataColumn(
+                      label: Text("Name Surname"),
+                    ),
+                    DataColumn(
+                      label: Text("E-mail"),
+                    ),
+                  ],
+                  rows: List.generate(
+                    controller.users.length,
+                    (index) =>
+                        recentUserDataRow(controller.users[index], context),
                   ),
-                  DataColumn(
-                    label: Text("Role"),
-                  ),
-                  DataColumn(
-                    label: Text("E-mail"),
-                  ),
-                  DataColumn(
-                    label: Text("Registration Date"),
-                  ),
-                  DataColumn(
-                    label: Text("Likes"),
-                  ),
-                  DataColumn(
-                    label: Text("Operation"),
-                  ),
-                ],
-                rows: List.generate(
-                  recentUsers.length,
-                  (index) => recentUserDataRow(recentUsers[index], context),
                 ),
               ),
             ),
@@ -65,7 +55,7 @@ class RecentUsers extends StatelessWidget {
   }
 }
 
-DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
+DataRow recentUserDataRow(UserModel userInfo, BuildContext context) {
   return DataRow(
     cells: [
       DataCell(
@@ -79,12 +69,12 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
               upperCase: true,
               numberLetters: 1,
               shape: Shape.Rectangle,
-              text: userInfo.name!,
+              text: userInfo.fullname!,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
               child: Text(
-                userInfo.name!,
+                userInfo.fullname!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -92,63 +82,31 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
           ],
         ),
       ),
-      DataCell(Container(
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color: getRoleColor(userInfo.role).withOpacity(.2),
-            border: Border.all(color: getRoleColor(userInfo.role)),
-            borderRadius: BorderRadius.all(Radius.circular(5.0) //
-                ),
-          ),
-          child: Text(userInfo.role!))),
-      DataCell(Text(userInfo.email!)),
-      DataCell(Text(userInfo.date!)),
-      DataCell(Text(userInfo.posts!)),
       DataCell(
         Row(
           children: [
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue.withOpacity(0.5),
-              ),
-              icon: Icon(
-                Icons.edit,
-                size: 14,
-              ),
-              onPressed: () {},
-              // Edit
-              label: Text("Edit"),
+            Text(
+              userInfo.email!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(
-              width: 6,
-            ),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.green.withOpacity(0.5),
-              ),
-              icon: Icon(
-                Icons.visibility,
-                size: 14,
-              ),
-              onPressed: () {},
-              //View
-              label: Text("View"),
-            ),
-            SizedBox(
-              width: 6,
-            ),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.red.withOpacity(0.5),
-              ),
-              icon: Icon(Icons.delete),
+            const Spacer(),
+            TextButton(
+              child: Text("Accept", style: TextStyle(color: Colors.redAccent)),
               onPressed: () {
                 showDialog(
                     context: context,
                     builder: (_) {
                       return AlertDialog(
                           title: Center(
-                            child: Text("Confirm Deletion"),
+                            child: Column(
+                              children: [
+                                Icon(Icons.warning_outlined,
+                                    size: 36, color: Colors.red),
+                                SizedBox(height: 20),
+                                Text("Confirm Accept"),
+                              ],
+                            ),
                           ),
                           content: Container(
                             color: secondaryColor,
@@ -156,7 +114,7 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
                             child: Column(
                               children: [
                                 Text(
-                                    "Are you sure want to delete '${userInfo.name}'?"),
+                                    "Are you sure want to accept '${userInfo.fullname}'?"),
                                 SizedBox(
                                   height: 16,
                                 ),
@@ -168,8 +126,6 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
                                           Icons.close,
                                           size: 14,
                                         ),
-                                        style: ElevatedButton.styleFrom(
-                                            primary: Colors.grey),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
@@ -183,9 +139,13 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
                                           size: 14,
                                         ),
                                         style: ElevatedButton.styleFrom(
-                                            primary: Colors.red),
-                                        onPressed: () {},
-                                        label: Text("Delete"))
+                                            backgroundColor: Colors.red),
+                                        onPressed: () {
+                                          Get.find<RequestController>()
+                                              .acceptUser(userInfo);
+                                          Get.back();
+                                        },
+                                        label: Text("Accept"))
                                   ],
                                 )
                               ],
@@ -194,7 +154,6 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
                     });
               },
               // Delete
-              label: Text("Delete"),
             ),
           ],
         ),

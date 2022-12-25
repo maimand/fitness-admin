@@ -49,6 +49,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   shared_preferences: ^2.0.15
   grouped_list: ^5.1.2
+  qr_flutter: ^4.0.0
 
 
 dev_dependencies:

@@ -1,16 +1,16 @@
 import 'package:get/get.dart';
 import 'package:smart_admin_dashboard/core/constants/color_constants.dart';
-import 'package:smart_admin_dashboard/screens/dashboard/components/recent_users.dart';
+import 'package:smart_admin_dashboard/screens/dashboard/components/recent_request.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_admin_dashboard/screens/dashboard/controllers/dashboard_controller.dart';
+import 'package:smart_admin_dashboard/screens/dashboard/controllers/request_controller.dart';
 
 import 'components/header.dart';
 
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+class RequestScreen extends StatelessWidget {
+  const RequestScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    Get.put(DashboardController(Get.find()));
+    Get.put(RequestController(Get.find()));
     return SafeArea(
       child: SingleChildScrollView(
         //padding: EdgeInsets.all(defaultPadding),
@@ -25,7 +25,7 @@ class DashboardScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 5,
-                    child: const RecentUsers(),
+                    child: const RecentRequest(),
                   ),
                   // if (!Responsive.isMobile(context))
                   //   SizedBox(width: defaultPadding),
