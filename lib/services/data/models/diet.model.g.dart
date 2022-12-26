@@ -69,7 +69,7 @@ FoodLog _$FoodLogFromJson(Map<String, dynamic> json) {
   return FoodLog(
     json['foodId'] as String?,
     json['foodName'] as String?,
-    json['time'] == null ? null : DateTime.parse(json['time'] as String),
+    json['time'] == null ? null : DateTime.parse((json['time'] as String ) + 'Z'),
     json['number'] as int?,
     json['totalCaloriesIntake'] as int?,
   );
