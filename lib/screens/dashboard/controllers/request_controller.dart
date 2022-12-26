@@ -27,11 +27,12 @@ class RequestController extends GetxController {
     }
   }
 
-  void acceptUser(UserModel user) {
+  void acceptUser(UserModel user) async {
     try {
-      repository.acceptUser(user.email!);
+      await repository.acceptUser(user.email!);
+      getUsers();
     } on Exception catch (e) {
-      Get.snackbar('Delete User Error', e.toString());
+      Get.snackbar('Accept User Error', e.toString());
     }
   }
 
